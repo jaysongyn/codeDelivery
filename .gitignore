@@ -3,3 +3,11 @@
 Homestead.yaml
 Homestead.json
 .env
+
+
+.idea/*
+.gitignore
+.idea/
+.idea
+/resources/bower_components
+
