@@ -1,18 +1,35 @@
 @extends('app')
 @section('content')
     <div class="container">
-        <h3>Novo Produto</h3>
+        <h3>Novo Pedido</h3>
 
         @include('errors._check')
 
-        {!! Form::open(['route' =>'admin.products.store']) !!}
+        <div class="container">
+            {!! Form::open(['class' => 'form' ]) !!}}
 
-        @include('admin.products._form')
+            <div class="form-group">
+                <label>Total:</label>
 
-        <div class="form-group">
-            {!! Form::submit('Criar Produto',['class' =>'btn btn-primary']) !!}
+                <p id="total"></p>
+                <a href="#" class="btn btn-default">Novo Item</a>
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th> Produto</th>
+                                <th> Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+
+                    </table>
+
+          </div>
+
+            {!! Form::close() !!}
         </div>
-
-        {!! Form::close() !!}
     </div>
 @endsection

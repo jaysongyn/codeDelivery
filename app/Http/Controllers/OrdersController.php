@@ -93,7 +93,7 @@ class OrdersController extends Controller
     public function edit($id)
     {
         $order = $this->repository->find($id);
-        $users = $this->userRepository->lists('name','id');
+        $users = $this->userRepository->findWhere(['role'=>'deliveryman'])->lists('name','id');
         $status = $this->statusRepository->lists('name','id');
         $clients = $this->clientRepository->with('user','status');
         return view('admin.orders.edit',compact('order','users','clients','status'));

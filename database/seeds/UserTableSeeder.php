@@ -1,5 +1,6 @@
 <?php
 
+use CodeDelivery\Models\User;
 use Illuminate\Database\Seeder;
 
 class UserTableSeeder extends Seeder
@@ -11,24 +12,28 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\CodeDelivery\Models\User::create([
+        factory(User::create([
             'name' => 'user',
             'email' => 'user@gmail.com',
             'password' => bcrypt(123456),
             'remember_token' => str_random(10),
-        ]));
+        ])->client()->save(factory(\CodeDelivery\Models\Client::class)->make()));
 
-        factory(\CodeDelivery\Models\User::create([
+        factory(User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt(123456),
             'remember_token' => str_random(10),
             'role' => 'admin'
-        ]));
+        ])->client()->save(factory(\CodeDelivery\Models\Client::class)->make()));
 
-        factory(\CodeDelivery\Models\User::class,10)->create()->each(function($u){
+        factory(User::class,10)->create()->each(function($u){
             $u->client()->save(factory(\CodeDelivery\Models\Client::class)->make());
         });
+
+        factory(User::class, 3)->create([
+            'role' => 'deliveryman'
+        ]);
 
     }
 }

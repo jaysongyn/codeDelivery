@@ -15,7 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix'=>'admin','middleware' => 'auth.checkrole','as'=>'admin.'],function(){
+Route::get('/home', function () {
+    return view('welcome');
+});
+
+Route::group(['prefix'=>'admin','middleware' => 'auth.checkrole:admin','as'=>'admin.'],function(){
 
     Route::get('categories/index',['as' => 'categories.index', 'uses' => 'CategoriesController@index'] );
     Route::get('categories/create',['as' => 'categories.create', 'uses' => 'CategoriesController@create']);
@@ -46,9 +50,34 @@ Route::group(['prefix'=>'admin','middleware' => 'auth.checkrole','as'=>'admin.']
 
     Route::get('orders/itens/{id}',['as' => 'ordersItens.index', 'uses' => 'OrdersController@items']);
 
+    Route::get('cupoms/create',['as' => 'cupoms.create', 'uses' => 'CupomsController@create']);
+    Route::get('cupoms/index',['as' => 'cupoms.index', 'uses' => 'CupomsController@index'] );
+    Route::post('cupoms/create',['as' => 'cupoms.store', 'uses' => 'CupomsController@store']);
+
+
+});
+
+Route::group(['prefix'=>'customer','middleware' => 'auth.checkrole:client','as'=>'customer.'],function(){
+    Route::get('order',['as'=> 'order.index','uses'=>'CheckoutController@index']);
+    Route::get('order/create',['as'=> 'order.create','uses'=>'CheckoutController@create']);
+    Route::post('order/store',['as'=> 'order.store','uses'=>'CheckoutController@store']);
 });
 
 Route::get('/test', function(){
    $repository = app()->make('CodeDelivery\Repositories\CategoryRepository');
    return $repository->all();
+});
+
+Route::post('oauth/access_token', function() {
+    return Response::json(Authorizer::issueAccessToken());
+});
+
+Route::group(['prefix'=>'api','middleware' => 'oauth','as'=>'api.'],function(){
+    Route::get('pedidos',function(){
+        return [
+            'id' => 1,
+            'client' => 'luiz Carlos',
+            'total' => 10
+        ];
+    });
 });
