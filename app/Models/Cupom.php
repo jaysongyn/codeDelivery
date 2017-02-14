@@ -10,7 +10,10 @@ class Cupom extends Model implements Transformable
 {
     use TransformableTrait;
 
+    protected $table = 'cupoms';
+
     protected $fillable = [
+        'id',
         'code',
         'value'
     ];

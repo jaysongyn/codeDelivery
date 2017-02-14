@@ -48,6 +48,8 @@ class OrderService
         try {
             $data['status_id'] = 1;
             $data['user_delivery_id'] = 1;
+            if(isset($data['cupom_id']))
+                unset($data['cupom_id']);
             if(isset($data['cupom_code'])){
                 $cupom = $this->cupomRepository->findByField('code',$data['cupom_code'])->first();
                 $data['cupom_id'] = $cupom->id;
@@ -76,14 +78,25 @@ class OrderService
                 $order->total = $total - $cupom->value;
             }
             $order->save();
+
             \DB::commit();
+
+            return $order;
+
         } catch (\Exception $e){
             \DB::rollback();
             throw $e;
         }
+    }
 
-
-
+    public function updateStatus($id,$idDeliveryman,$status){
+        $order = $this->orderRepository->getByIdAndDeliveryMan($id,$idDeliveryman);
+        if(count($order)){
+            $order->status_id = $status;
+            $order->save();
+            return $order;
+        }
+        return false;
     }
 }
 

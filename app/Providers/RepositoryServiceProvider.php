@@ -63,5 +63,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'CodeDelivery\Repositories\CupomRepository',
             'CodeDelivery\Repositories\CupomRepositoryEloquent'
         );
+
+        $this->app->bind(
+            'CodeDelivery\Repositories\OauthClientRepository',
+            'CodeDelivery\Repositories\OauthClientRepositoryEloquent'
+        );
     }
 }

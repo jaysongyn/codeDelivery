@@ -19,65 +19,73 @@ Route::get('/home', function () {
     return view('welcome');
 });
 
-Route::group(['prefix'=>'admin','middleware' => 'auth.checkrole:admin','as'=>'admin.'],function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'auth.checkrole:admin', 'as' => 'admin.'], function () {
 
-    Route::get('categories/index',['as' => 'categories.index', 'uses' => 'CategoriesController@index'] );
-    Route::get('categories/create',['as' => 'categories.create', 'uses' => 'CategoriesController@create']);
-    Route::post('categories/create',['as' => 'categories.store', 'uses' => 'CategoriesController@store']);
-    Route::get('categories/edit/{id}',['as' => 'categories.edit', 'uses' => 'CategoriesController@edit']);
-    Route::post('categories/update/{id}',['as' => 'categories.update', 'uses' => 'CategoriesController@update']);
+    Route::get('categories/index', ['as' => 'categories.index', 'uses' => 'CategoriesController@index']);
+    Route::get('categories/create', ['as' => 'categories.create', 'uses' => 'CategoriesController@create']);
+    Route::post('categories/create', ['as' => 'categories.store', 'uses' => 'CategoriesController@store']);
+    Route::get('categories/edit/{id}', ['as' => 'categories.edit', 'uses' => 'CategoriesController@edit']);
+    Route::post('categories/update/{id}', ['as' => 'categories.update', 'uses' => 'CategoriesController@update']);
 
-    Route::get('products/index',['as' => 'products.index', 'uses' => 'ProductsController@index'] );
-    Route::get('products/create',['as' => 'products.create', 'uses' => 'ProductsController@create']);
-    Route::post('products/create',['as' => 'products.store', 'uses' => 'ProductsController@store']);
-    Route::get('products/edit/{id}',['as' => 'products.edit', 'uses' => 'ProductsController@edit']);
-    Route::post('products/update/{id}',['as' => 'products.update', 'uses' => 'ProductsController@update']);
-    Route::get('products/destroy/{id}',['as' => 'products.destroy', 'uses' => 'ProductsController@destroy']);
+    Route::get('products/index', ['as' => 'products.index', 'uses' => 'ProductsController@index']);
+    Route::get('products/create', ['as' => 'products.create', 'uses' => 'ProductsController@create']);
+    Route::post('products/create', ['as' => 'products.store', 'uses' => 'ProductsController@store']);
+    Route::get('products/edit/{id}', ['as' => 'products.edit', 'uses' => 'ProductsController@edit']);
+    Route::post('products/update/{id}', ['as' => 'products.update', 'uses' => 'ProductsController@update']);
+    Route::get('products/destroy/{id}', ['as' => 'products.destroy', 'uses' => 'ProductsController@destroy']);
 
-    Route::get('clients/index',['as' => 'clients.index', 'uses' => 'ClientsController@index'] );
-    Route::get('clients/create',['as' => 'clients.create', 'uses' => 'ClientsController@create']);
-    Route::post('clients/create',['as' => 'clients.store', 'uses' => 'ClientsController@store']);
-    Route::get('clients/edit/{id}',['as' => 'clients.edit', 'uses' => 'ClientsController@edit']);
-    Route::post('clients/update/{id}',['as' => 'clients.update', 'uses' => 'ClientsController@update']);
-    Route::get('clients/destroy/{id}',['as' => 'clients.destroy', 'uses' => 'ClientsController@destroy']);
+    Route::get('clients/index', ['as' => 'clients.index', 'uses' => 'ClientsController@index']);
+    Route::get('clients/create', ['as' => 'clients.create', 'uses' => 'ClientsController@create']);
+    Route::post('clients/create', ['as' => 'clients.store', 'uses' => 'ClientsController@store']);
+    Route::get('clients/edit/{id}', ['as' => 'clients.edit', 'uses' => 'ClientsController@edit']);
+    Route::post('clients/update/{id}', ['as' => 'clients.update', 'uses' => 'ClientsController@update']);
+    Route::get('clients/destroy/{id}', ['as' => 'clients.destroy', 'uses' => 'ClientsController@destroy']);
 
-    Route::get('orders/index',['as' => 'orders.index', 'uses' => 'OrdersController@index'] );
-    Route::get('orders/create',['as' => 'orders.create', 'uses' => 'OrdersController@create']);
-    Route::post('orders/create',['as' => 'orders.store', 'uses' => 'OrdersController@store']);
-    Route::get('orders/edit/{id}',['as' => 'orders.edit', 'uses' => 'OrdersController@edit']);
-    Route::post('orders/update/{id}',['as' => 'orders.update', 'uses' => 'OrdersController@update']);
-    Route::get('orders/destroy/{id}',['as' => 'orders.destroy', 'uses' => 'OrdersController@destroy']);
+    Route::get('orders/index', ['as' => 'orders.index', 'uses' => 'OrdersController@index']);
+    Route::get('orders/create', ['as' => 'orders.create', 'uses' => 'OrdersController@create']);
+    Route::post('orders/create', ['as' => 'orders.store', 'uses' => 'OrdersController@store']);
+    Route::get('orders/edit/{id}', ['as' => 'orders.edit', 'uses' => 'OrdersController@edit']);
+    Route::post('orders/update/{id}', ['as' => 'orders.update', 'uses' => 'OrdersController@update']);
+    Route::get('orders/destroy/{id}', ['as' => 'orders.destroy', 'uses' => 'OrdersController@destroy']);
 
-    Route::get('orders/itens/{id}',['as' => 'ordersItens.index', 'uses' => 'OrdersController@items']);
+    Route::get('orders/itens/{id}', ['as' => 'ordersItens.index', 'uses' => 'OrdersController@items']);
 
-    Route::get('cupoms/create',['as' => 'cupoms.create', 'uses' => 'CupomsController@create']);
-    Route::get('cupoms/index',['as' => 'cupoms.index', 'uses' => 'CupomsController@index'] );
-    Route::post('cupoms/create',['as' => 'cupoms.store', 'uses' => 'CupomsController@store']);
+    Route::get('cupoms/create', ['as' => 'cupoms.create', 'uses' => 'CupomsController@create']);
+    Route::get('cupoms/index', ['as' => 'cupoms.index', 'uses' => 'CupomsController@index']);
+    Route::post('cupoms/create', ['as' => 'cupoms.store', 'uses' => 'CupomsController@store']);
 
 
 });
 
-Route::group(['prefix'=>'customer','middleware' => 'auth.checkrole:client','as'=>'customer.'],function(){
-    Route::get('order',['as'=> 'order.index','uses'=>'CheckoutController@index']);
-    Route::get('order/create',['as'=> 'order.create','uses'=>'CheckoutController@create']);
-    Route::post('order/store',['as'=> 'order.store','uses'=>'CheckoutController@store']);
+Route::group(['prefix' => 'customer', 'middleware' => 'auth.checkrole:client', 'as' => 'customer.'], function () {
+    Route::get('order', ['as' => 'order.index', 'uses' => 'CheckoutController@index']);
+    Route::get('order/create', ['as' => 'order.create', 'uses' => 'CheckoutController@create']);
+    Route::post('order/store', ['as' => 'order.store', 'uses' => 'CheckoutController@store']);
 });
 
-Route::get('/test', function(){
-   $repository = app()->make('CodeDelivery\Repositories\CategoryRepository');
-   return $repository->all();
+Route::get('/test', function () {
+    $repository = app()->make('CodeDelivery\Repositories\CategoryRepository');
+    return $repository->all();
 });
 
-Route::post('oauth/access_token', function() {
+Route::post('oauth/access_token', function () {
     return Response::json(Authorizer::issueAccessToken());
 });
 
-Route::group(['prefix'=>'api','middleware' => 'oauth','as'=>'api.'],function(){
-    Route::get('pedidos',function(){
-        return [
-            'id' => 1,
-            'client' => 'luiz Carlos',
-            'total' => 10
-        ];
+Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function () {
+
+    Route::group(['prefix' => 'client', 'middleware' => 'oauth.checkrole:client', 'as' => 'client.'], function () {
+        Route::resource('order', 'Api\Client\ClientCheckoutController', ['except' => ['create', 'edit', 'destroy']]);
     });
+
+    Route::resource('teste', 'Api\teste\testeController', ['except' => ['create', 'edit', 'destroy']]);
+
+
+    Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function () {
+        Route::resource('order', 'Api\DeliveryMan\DeliveryManController', ['except' => ['create', 'edit', 'destroy', 'store']]);
+        Route::patch('order/{id}/update-status', ['uses' => 'Api\DeliveryMan\DeliveryManController@updateStatus',
+            'as' => 'orders.update_status']);
+    });
+
+
 });

@@ -2,9 +2,11 @@
 
 namespace CodeDelivery\Repositories;
 
+use CodeDelivery\Presenters\OrderPresenter;
+use Illuminate\Database\Eloquent\Collection;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use CodeDelivery\Repositories\OrderRepository;
+
 use CodeDelivery\Models\Order;
 use CodeDelivery\Validators\OrderValidator;
 
@@ -14,6 +16,28 @@ use CodeDelivery\Validators\OrderValidator;
  */
 class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
 {
+
+    protected $skipPresenter = true;
+
+    public function getByIdAndDeliveryMan($id,$iddeliveryman)
+    {
+        $result = $this->findWhere([
+            'id' => $id,
+            'user_delivery_id' =>$iddeliveryman
+        ]);
+
+        if($result instanceof Collection){
+            $result = $result->first();
+        }else{
+            if(isset($result['data']) && count($result['data']) == 1){
+                $result = [
+                    'data' => $result['data'][0]
+                ];
+            }
+        }
+
+        return $result;
+    }
     /**
      * Specify Model class name
      *
@@ -24,8 +48,6 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
         return Order::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
@@ -33,4 +55,10 @@ class OrderRepositoryEloquent extends BaseRepository implements OrderRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function presenter()
+    {
+        return OrderPresenter::class;
+    }
+
 }
