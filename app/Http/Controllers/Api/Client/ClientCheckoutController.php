@@ -70,5 +70,10 @@ class ClientCheckoutController  extends Controller
        return $order = $this->repository->skipPresenter(false)->with($this->with)->find($id);
     }
 
+    public function authenticated()
+    {
+        return $this->userRepository->find(Authorizer::getResourceOwnerId());
+    }
+
 
 }

@@ -22,9 +22,13 @@ angular.module('starter', ['ionic'])
     }
   });
 })
-.config(function($stateProvider){
+.config(function($stateProvider,$urlRouterProvider){
         $stateProvider.state('home',{
           url: '/home',
           templateUrl: 'templates/home.html'
-        })
+        }).state('main',{
+            url: '/',
+            templateUrl: 'templates/main.html'
+        });
+        $urlRouterProvider.otherwise('/');
     });
