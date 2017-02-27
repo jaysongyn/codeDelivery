@@ -14,11 +14,11 @@ use CodeDelivery\Http\Controllers\Controller;
 
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
-class ClientCheckoutController  extends Controller
+class ClientCheckoutController extends Controller
 {
     private $repository;
 
-    private $with =[
+    private $with = [
         'client',
         'cupom',
         'items.product'
@@ -44,17 +44,18 @@ class ClientCheckoutController  extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index(){
+    public function index()
+    {
         $id = Authorizer::getResourceOwnerId();
         $clientid = $this->userRepository->find($id)->client->id;
-        $orders = $this->repository->skipPresenter(false)->with($this->with)->scopeQuery(function($query) use ($clientid){
-          return   $query->where('client_id','=', $clientid);
+        $orders = $this->repository->skipPresenter(false)->with($this->with)->scopeQuery(function ($query) use ($clientid) {
+            return $query->where('client_id', '=', $clientid);
         })->paginate(2);
 
         return $orders;
     }
 
-    public  function  store(Requests\CheckoutRequest $request)
+    public function store(Requests\CheckoutRequest $request)
     {
         $id = Authorizer::getResourceOwnerId();
         $data = $request->all();
@@ -67,7 +68,7 @@ class ClientCheckoutController  extends Controller
 
     public function show($id)
     {
-       return $order = $this->repository->skipPresenter(false)->with($this->with)->find($id);
+        return $order = $this->repository->skipPresenter(false)->with($this->with)->find($id);
     }
 
     public function authenticated()

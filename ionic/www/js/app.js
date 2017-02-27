@@ -3,8 +3,15 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('controllers',[]);
+angular.module('services',[]);
+angular.module('filters',[]);
 
+angular.module('starter', [
+    'ionic','controllers','services','filters','angular-oauth2','ngResource','ngCordova'
+]).constant('appConfig',{
+    baseUrl: 'http://localhost:8000'
+})
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -22,13 +29,98 @@ angular.module('starter', ['ionic'])
     }
   });
 })
-.config(function($stateProvider,$urlRouterProvider){
+
+.config(function($stateProvider,$urlRouterProvider,OAuthProvider,OAuthTokenProvider,appConfig,$provide){
+
+        OAuthProvider.configure({
+            baseUrl: appConfig.baseUrl,
+            clientId: 'appid01',
+            clientSecret: 'secret', // optional
+            grantPath: 'oauth/access_token'
+        });
+
+        OAuthTokenProvider.configure({
+            name: 'token',
+            options: {
+                secure: false
+            }
+        });
+
         $stateProvider.state('home',{
           url: '/home',
           templateUrl: 'templates/home.html'
-        }).state('main',{
-            url: '/',
-            templateUrl: 'templates/main.html'
+        }).state('login',{
+            url: '/login',
+            templateUrl: 'templates/login.html',
+            controller: 'LoginCtrl'
+        })
+        .state('client',{
+            abstract: true,
+            url:'/client',
+            templateUrl: 'templates/client/menu.html',
+            controller: 'ClientMenuCtrl'
+        })
+            .state('client.order',{
+                cache: false,
+                url: '/order',
+                templateUrl: 'templates/client/order.html',
+                controller: 'ClientOrderCtrl'
+            })
+        .state('client.checkout',{
+            cache: false,
+            url: '/checkout',
+            templateUrl: 'templates/client/checkout.html',
+            controller: 'ClientCheckoutCtrl'
+        })
+        .state('client.checkout_item_detail',{
+            url:'/detail/:index',
+            templateUrl: 'templates/client/checkout_detail.html',
+            controller: 'ClientCheckoutDetailCtrl'
+        })
+            .state('client.checkout_successful',{
+                cache: false,
+                url: '/checkout/successful',
+                templateUrl: 'templates/client/checkout_successful.html',
+                controller: 'ClientCheckoutSuccessfulCtrl'
+            })
+        .state('client.view_products',{
+            url:'/view_products',
+            templateUrl: 'templates/client/view_products.html',
+            controller: 'ClientViewProductCtrl'
         });
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/login');
+
+        $provide.decorator('OAuthToken',['$localStorage','$delegate',function($localStorage,$delegate){
+            Object.defineProperties($delegate,{
+                setToken:{
+                    value: function(data){
+                      return  $localStorage.setObject('token',data);
+                    },
+                    enumerable: true,
+                    configurable: true,
+                    writable: true
+                },
+                getToken:{
+                    value:function(){
+                        return $localStorage.getObject('token');
+                    },
+                    enumerable: true,
+                    configurable: true,
+                    writable: true
+                },
+                removeToken:{
+                    value:function(){
+                        return $localStorage.setObject('token',null);
+                    },
+                    enumerable: true,
+                    configurable: true,
+                    writable: true
+                },
+
+            });
+            return $delegate;
+        }])
+    })
+    .service('cart', function(){
+       this.item = [];
     });

@@ -84,6 +84,7 @@ class OrderService
             return $order;
 
         } catch (\Exception $e){
+            dd($e->getMessage());
             \DB::rollback();
             throw $e;
         }

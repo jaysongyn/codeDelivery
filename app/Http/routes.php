@@ -68,26 +68,30 @@ Route::get('/test', function () {
     return $repository->all();
 });
 
-Route::post('oauth/access_token', function () {
-    return Response::json(Authorizer::issueAccessToken());
-});
+Route::group(['middleware' => 'cors'],function(){
 
-Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function () {
-
-    Route::get('authenticated', ['uses' => 'Api\Client\ClientCheckoutController@authenticated']);
-
-    Route::group(['prefix' => 'client', 'middleware' => 'oauth.checkrole:client', 'as' => 'client.'], function () {
-        Route::resource('order', 'Api\Client\ClientCheckoutController', ['except' => ['create', 'edit', 'destroy']]);
+    Route::post('oauth/access_token', function () {
+        return Response::json(Authorizer::issueAccessToken());
     });
 
-    Route::resource('teste', 'Api\teste\testeController', ['except' => ['create', 'edit', 'destroy']]);
+    Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function () {
+
+        Route::get('authenticated', ['uses' => 'Api\Client\UserController@authenticated']);
+
+        Route::group(['prefix' => 'client', 'middleware' => 'oauth.checkrole:client', 'as' => 'client.'], function () {
+            Route::resource('order', 'Api\Client\ClientCheckoutController', ['except' => ['create', 'edit', 'destroy']]);
+            Route::get('products','Api\Client\ClientProductController@index');
+        });
+
+        Route::resource('teste', 'Api\teste\testeController', ['except' => ['create', 'edit', 'destroy']]);
 
 
-    Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function () {
-        Route::resource('order', 'Api\DeliveryMan\DeliveryManController', ['except' => ['create', 'edit', 'destroy', 'store']]);
-        Route::patch('order/{id}/update-status', ['uses' => 'Api\DeliveryMan\DeliveryManController@updateStatus',
-            'as' => 'orders.update_status']);
+        Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function () {
+            Route::resource('order', 'Api\DeliveryMan\DeliveryManController', ['except' => ['create', 'edit', 'destroy', 'store']]);
+            Route::patch('order/{id}/update-status', ['uses' => 'Api\DeliveryMan\DeliveryManController@updateStatus',
+                'as' => 'orders.update_status']);
+        });
+
+        Route::get('cupom/{code}','Api\CupomController@show');
     });
-
-
 });
